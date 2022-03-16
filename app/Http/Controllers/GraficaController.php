@@ -53,7 +53,12 @@ class GraficaController extends Controller
                 "datos" => $datos,
                 "bg" => ['#E03C32','#FFD301','#7BB662', '#7BB662']
             ]);
+        }else if ($request->status == 'intercambio') {
+            $products = DB::table('productos')->select('id', 'linea','intercambio', 'created_at')->whereNotNull('intercambio')->get();
+            return view('grafica.intercambio',compact('products'));
+        }else if ($request->status == 'filterSearch') {
+            $products = DB::table('productos')->whereBetween('created_at', [$request->dateDe, $request->dateA])->whereNotNull('intercambio')->get();
+            return $products;
         }
-        
     }
 }

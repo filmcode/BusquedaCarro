@@ -12,9 +12,12 @@
         <select id="statusGrafica" value="searchCarros" style="margin-bottom: 20px;">
             <option value="searchCarros">Estadistica por usuario</option>
             <option value="status">Estados</option>
+            <option value="intercambio">Intercambio</option>
         </select>
     </form>
-    <canvas id="myChart" class="mychart"></canvas>
+    <div id="result">    
+        <canvas id="myChart" class="mychart"></canvas>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script src="/js/grafica.js"></script>
 </x-app-layout>
