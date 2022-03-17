@@ -62,7 +62,12 @@
                                 @endphp
                                 @endif
                             @endforeach
+                            @if (substr($images[0],strlen($images[0]) -3) == 'pdf')
+                            <img src="/img/pdf.png" data-images="{{implode(',',$images)}}" style="cursor: pointer;height:80px;width:80px;border-radius: 5px;">
+                            @else
                             <img src="{{$images[0]}}" data-images="{{implode(',',$images)}}" style="cursor: pointer;height:80px;width:80px;border-radius: 5px;">
+                            @endif
+                            {{$images[0]}}
                         </td>                        
                         <td class="border px-4 py-2">
                             <div class="flex justify-center rounded-lg text-lg" role="group">

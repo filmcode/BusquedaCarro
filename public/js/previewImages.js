@@ -13,7 +13,7 @@ const urlImages = () => {
         if (imagen.files.length > 0) {
             let arrayUrls = new Array()
             for (let i = 0; i < imagen.files.length; i++) {
-                arrayUrls.push(URL.createObjectURL(imagen.files[i]))
+                arrayUrls.push([URL.createObjectURL(imagen.files[i]), imagen.files[i]['type']])
             }
             resolve(arrayUrls)
         } else {
@@ -33,10 +33,17 @@ const sliderImages = images => {
                 // content image
             let slider__content_image = document.createElement('div')
             slider__content_image.setAttribute('class', 'slider__content-image')
+            let slider_image;
+            if (images[e][1] == 'application/pdf') {
+                //  pdf
+                slider_image = document.createElement('iframe')
+                slider_image.style = 'width: 100%;';
+            } else {
                 //  image
-            let slider_image = document.createElement('img')
+                slider_image = document.createElement('img')
+            }
             slider_image.setAttribute('class', 'slider__img')
-            slider_image.setAttribute('src', images[e])
+            slider_image.setAttribute('src', images[e][0])
             slider__content_image.append(slider_image)
             slider__section.append(slider__content_image)
             sliderContent.append(slider__section)
@@ -108,13 +115,17 @@ sectionValidate()
 imagen.addEventListener('change', async() => {
     imagePreview.innerHTML = "Cargando..."
     const arrayImages = await urlImages()
-
+    console.log(arrayImages);
     if (arrayImages) {
         const res = await sliderImages(arrayImages)
         imagePreview.innerHTML = ''
         if (res) {
             sectionValidate()
-            preview(arrayImages[0])
+            if (arrayImages[0][1] == 'application/pdf') {
+                preview('/img/pdf.png')
+            } else {
+                preview(arrayImages[0][0])
+            }
         }
     } else {
         imagePreview.innerHTML = ''

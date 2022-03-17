@@ -19,10 +19,21 @@ const sliderImages = images => {
                 // content image
             let slider__content_image = document.createElement('div')
             slider__content_image.setAttribute('class', 'slider__content-image')
+
+            let slider_image;
+            if (images[e].substr(images[e].length - 3) == 'pdf') {
+                //  pdf
+                slider_image = document.createElement('iframe')
+                slider_image.style = 'width: 100%;';
+            } else {
                 //  image
-            let slider_image = document.createElement('img')
-            slider_image.setAttribute('class', 'slider__img')
+                slider_image = document.createElement('img')
+            }
+
             slider_image.setAttribute('src', images[e])
+
+
+            slider_image.setAttribute('class', 'slider__img')
             slider__content_image.append(slider_image)
             slider__section.append(slider__content_image)
             sliderContent.append(slider__section)
@@ -98,33 +109,3 @@ imagesData.forEach(image => {
         }
     })
 });
-
-// DOM
-// let imagesTable =
-// imagen.addEventListener('change', async() => {
-//     imagePreview.innerHTML = "Cargando..."
-//     const arrayImages = await urlImages()
-
-//     if (arrayImages) {
-//         const res = await sliderImages(arrayImages)
-//         imagePreview.innerHTML = ''
-//         if (res) {
-//             // slider
-//             let sectionImages = document.querySelectorAll('.slider__section')
-//             if (sectionImages.length > 1) {
-//                 sliderContent.style.marginLeft = '-100%'
-//                 sliderButtonLeft.style.display = 'block';
-//                 sliderButtonRight.style.display = 'block';
-//                 // poner ultima imagen de primeras
-//                 sliderContent.insertAdjacentElement('afterbegin', sectionImages[sectionImages.length - 1])
-//             } else {
-//                 sliderContent.style.marginLeft = '0'
-//                 sliderButtonLeft.style.display = 'none';
-//                 sliderButtonRight.style.display = 'none';
-//             }
-//             preview(arrayImages[0])
-//         }
-//     } else {
-//         imagePreview.innerHTML = ''
-//     }
-// })
