@@ -73,7 +73,11 @@
                     <img src="/imagen/{{ $producto->imagen }}" width="200px" id="imagenSeleccionada">
                 </div>                                     -->
                 <div class="grid grid-cols-1 mt-5 mx-7" id="imagePreview">
+                    @if (substr($productsImages[0]->name,strlen($productsImages[0]->name) -3) == 'pdf')
+                    <img class="image-preview" src="/img/pdf.png">
+                    @else
                     <img class="image-preview" src="/img/{{$productsImages[0]->name}}">
+                    @endif
                 </div>
                 <!-- modal -->
                 <div class="modal modal--close" id="modal">
@@ -83,7 +87,11 @@
                             @foreach($productsImages as $image)
                                 <div class="slider__section">
                                     <div class="slider__content-image">
-                                        <img class="slider__img" src="/img/{{$image->name}}">
+                                    @if (substr($image->name,strlen($image->name) -3) == 'pdf')
+                                    <iframe class="slider__img" src="/img/{{$image->name}}" style="width: 100%;"></iframe>
+                                    @else
+                                    <img class="slider__img" src="/img/{{$image->name}}">
+                                    @endif
                                     </div>
                                 </div>
                             @endforeach
