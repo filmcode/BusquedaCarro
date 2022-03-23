@@ -12,7 +12,18 @@
 <x-app-layout>
 
             @can('crear-producto')
-            <a type="button" href="{{ route('productos.create') }}" class="btn bg-primary mb-4">Crear</a>
+            <div class="d-flex justify-content-between">
+                <a type="button" href="{{ route('productos.create') }}" class="btn bg-primary mb-4">Crear</a>
+                <form action="/productos">
+                    <label for="date_de">De: 
+                        <input type="date" name="dateDe" id="dateDe" value="{{$date['dateDe']}}">
+                    </label>
+                    <label for="date_a">A: 
+                        <input type="date" name="dateA" id="dateA" value="{{$date['dateA']}}">
+                    </label>
+                    <input type="submit" id="filterSearch" class="btn btn-primary" value="Buscar">
+                </form>
+            </div>
             @endcan
             <div class="col-sm-12" style="overflow: auto">
             <table id="excel" class="table table-striped table-bordered nowrap shadow-lg mt-4" style="width: 100%">

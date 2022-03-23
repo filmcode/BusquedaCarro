@@ -9,6 +9,10 @@ use Illuminate\Support\Str;
 use App\Models\Producto;
 use App\Models\ProductImage;
 
+// Emails
+use App\Mail\NotificationCars;
+use Illuminate\Support\Facades\Mail;
+
 class ProductoController extends Controller
 {
     function __construct()
@@ -23,11 +27,28 @@ class ProductoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = DB::table('productos')->paginate(5);
-        $productsImages = DB::table('product_images')->get();
-        return view('productos.index',compact('products','productsImages'));
+        
+        if ($request->has('dateDe') && $request->has('dateA') && 
+        !empty($request->dateDe) && !empty($request->dateA)) {
+            $products = DB::table('productos')->whereBetween('created_at', [$request->dateDe, $request->dateA])->whereNotNull('intercambio')->paginate(5);
+            $productsImages = DB::table('product_images')->get();
+            $date = [
+                "dateDe" => $request->dateDe,
+                "dateA" => $request->dateA,
+            ];
+            return view('productos.index',compact('products','productsImages', 'date'));
+        } else {
+            
+            $products = DB::table('productos')->paginate(5);
+            $productsImages = DB::table('product_images')->get();
+            $date = [
+                "dateDe" => "",
+                "dateA" => "",
+            ];
+            return view('productos.index',compact('products','productsImages', 'date'));
+        }
     }
 
     /**
@@ -48,7 +69,7 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $dataCars = $request->validate([
             'linea' => 'required', 'intercambio' => ' ', 'catalogo' => 'required', 'modelo' => 'required', 'serie' => 'required', 'color' => 'required', 'ubicacion' => 'required', 'costo' => 'required', 'estatus' => ' ', 'observaciones' => ' ','apartado' => ' ' 
         ]);
         
@@ -72,6 +93,8 @@ class ProductoController extends Controller
                     ]);
                 }
             }
+            $correo = new NotificationCars($product);
+            Mail::to('gustavojaimes1993@gmail.com')->queue($correo);
             return redirect()->route('productos.index');
         }        
     }

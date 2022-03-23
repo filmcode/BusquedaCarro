@@ -12,6 +12,8 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CarroController; 
 use App\Http\Controllers\GraficaController; 
 
+use App\Mail\NotificationCars;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,8 +43,13 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('carros', CarroController::class);
     Route::resource('grafica', GraficaController::class);
     Route::post('/ajaxGrafica', [GraficaController::class, 'ajaxGrafica']);
-});
+    Route::get('/notification', function () {
+        $correo = new NotificationCars;
 
+        Mail::to('welkrondiaz@gmail.com')->send($correo);
+        return "mensaje enviado";
+    });   
+});
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
